@@ -6,6 +6,7 @@ import com.example.concentrationgrid.util.PreferenceResolver
 @Composable
 fun SettingScreen() {
     val gridSettingsPreferences = PreferenceResolver(LocalContext.current).obtainGridSettings()
-    gridSettingsPreferences.getString("ShuffleRate", "0")
+    val shuffleRate = gridSettingsPreferences.getString("ShuffleRate", "0")
+
 
 }

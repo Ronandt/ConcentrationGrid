@@ -9,3 +9,4 @@ class PreferenceResolver(private var context: Context) {
         return context.getSharedPreferences(gridSettingPreferenceName, Context.MODE_PRIVATE)
     }
 }
+
