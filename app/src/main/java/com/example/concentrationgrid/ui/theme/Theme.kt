@@ -19,13 +19,15 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = Color.Black,
     secondary = Color.DarkGray,
-    tertiary = Color.DarkGray
+    tertiary = Color.DarkGray,
+    outline = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Color.Black,
     secondary =  Color.DarkGray,
-    tertiary = Color.DarkGray
+    tertiary = Color.DarkGray,
+    outline = Color.Black
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -46,10 +48,7 @@ fun ConcentrationGridTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
@@ -58,7 +57,7 @@ fun ConcentrationGridTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = Color.Black.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

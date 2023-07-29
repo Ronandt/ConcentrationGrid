@@ -79,7 +79,7 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
             Scaffold(topBar = {
                 TopAppBar(
                     title = { Text("Concentration game", color = Color.White) },
-                    colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+                    colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = Color.Black)
                 )
             }, floatingActionButton = {
                 FloatingActionButton(
@@ -157,14 +157,14 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
                                 Spacer(
                                     modifier = Modifier
                                         .matchParentSize()
-                                        .background(Color(0xDD000000))
+                                        .background(Color(0xAD000000))
                                 )
                                 Button(onClick = {
                                     concentrationViewModel.resolveGameState(
                                         GameState.Playing
                                     )
                                 }, modifier = Modifier.align(Alignment.Center)) {
-                                    Text("Start")
+                                    Text("Start", color = Color.White)
                                 }
                             }
 
@@ -186,8 +186,8 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
                                         width = 3.dp,
                                         brush = Brush.linearGradient(
                                             listOf(
-                                                Color.Black,
-                                                Color.Black
+                                                MaterialTheme.colorScheme.outline,
+                                                MaterialTheme.colorScheme.outline
                                             )
                                         ),
                                         shape = RoundedCornerShape(10.dp)
@@ -223,7 +223,7 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
                                         },
                                         enabled = concentrationGridUiState.gameState == GameState.Playing
                                     ) {
-                                        Text("Reset", fontSize = 18.sp)
+                                        Text("Reset", fontSize = 18.sp, color = if(concentrationGridUiState.gameState == GameState.Playing) Color(0xff64B5F6) else Color.DarkGray)
                                     }
                                 }
 
