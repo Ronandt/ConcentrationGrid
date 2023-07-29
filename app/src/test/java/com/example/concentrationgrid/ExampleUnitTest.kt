@@ -1,4 +1,4 @@
-package com.example.pager
+package com.example.concentrationgrid
 
 import org.junit.Test
 

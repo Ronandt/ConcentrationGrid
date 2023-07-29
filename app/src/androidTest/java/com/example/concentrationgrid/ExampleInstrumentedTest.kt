@@ -1,4 +1,4 @@
-package com.example.pager
+package com.example.concentrationgrid
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

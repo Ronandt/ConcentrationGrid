@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    namespace 'com.example.pager'
+    namespace 'com.example.concentrationgrid'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.pager"
-        minSdk 29
+        applicationId "com.example.concentrationgrid"
+        minSdk 28
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -51,7 +51,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-
+    implementation 'androidx.navigation:navigation-compose:2.6.0'
     implementation 'androidx.activity:activity-compose:1.5.1'
     implementation("androidx.compose.foundation:foundation:1.4.0")
     implementation platform('androidx.compose:compose-bom:2022.10.00')
