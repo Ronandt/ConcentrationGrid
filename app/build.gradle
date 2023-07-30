@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id "com.google.protobuf" version '0.9.1'
+    id "com.google.protobuf" version '0.9.1' //automate compilation task
 }
 
 android {
@@ -73,24 +73,18 @@ dependencies {
 }
 protobuf {
     protoc {
-        if (osdetector.os == "osx") {
-            artifact = 'com.google.protobuf:protoc:3.14.0:osx-x86_64'
-        } else {
-            artifact = 'com.google.protobuf:protoc:3.0.0'
-        }
+
+            artifact = 'com.google.protobuf:protoc:3.23.0' //installs pre-compiled version of protobuf compiler
+
+        //https://repo1.maven.org/maven2/com/google/protobuf/protoc/3.21.10/protoc-3.21.10-windows-x86_64.exe
     }
-    plugins {
-        lite {
-            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
-        }
-    }
+    //loop through all tasks and configures the task
     generateProtoTasks {
         all().each { task ->
             task.builtins {
-                remove java
-            }
-            task.plugins {
-                lite { }
+                java {
+                    option "lite" //set the compilation option to lite $ protoc --java_out=lite:${OUTPUT_DIR} path/to/your/proto/file
+                }
             }
         }
     }
