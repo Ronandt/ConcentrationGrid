@@ -1,4 +1,4 @@
-package com.example.concentrationgrid.util
+package com.example.concentrationgrid.presentation.util
 
 import android.content.Context
 import android.content.SharedPreferences

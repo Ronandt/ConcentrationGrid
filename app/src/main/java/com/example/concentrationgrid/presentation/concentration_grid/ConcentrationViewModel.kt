@@ -1,8 +1,8 @@
-package com.example.concentrationgrid.concentration_grid
+package com.example.concentrationgrid.presentation.concentration_grid
 
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
-import com.example.concentrationgrid.concentration_grid.states.GameState
+import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

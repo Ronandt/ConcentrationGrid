@@ -1,4 +1,4 @@
-package com.example.concentrationgrid.ui.theme
+package com.example.concentrationgrid.presentation.concentration_grid.theme
 
 import androidx.compose.ui.graphics.Color
 

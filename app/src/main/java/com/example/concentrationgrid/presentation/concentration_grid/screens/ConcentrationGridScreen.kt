@@ -1,4 +1,4 @@
-package com.example.concentrationgrid.concentration_grid.screens
+package com.example.concentrationgrid.presentation.concentration_grid.screens
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.updateTransition
@@ -48,9 +48,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.concentrationgrid.concentration_grid.ConcentrationViewModel
-import com.example.concentrationgrid.concentration_grid.states.GameState
-import com.example.concentrationgrid.ui.theme.ConcentrationGridTheme
+import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationViewModel
+import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
+import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

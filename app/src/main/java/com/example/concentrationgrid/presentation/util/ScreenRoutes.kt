@@ -1,4 +1,4 @@
-package com.example.concentrationgrid.util
+package com.example.concentrationgrid.presentation.util
 
 object ScreenRoutes {
     const val ConcentrationGridScreen = "concentrationGrid"

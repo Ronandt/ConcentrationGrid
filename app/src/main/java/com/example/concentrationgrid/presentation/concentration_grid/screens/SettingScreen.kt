@@ -1,7 +1,7 @@
-package com.example.concentrationgrid.concentration_grid.screens
+package com.example.concentrationgrid.presentation.concentration_grid.screens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import com.example.concentrationgrid.util.PreferenceResolver
+import com.example.concentrationgrid.presentation.util.PreferenceResolver
 
 @Composable
 fun SettingScreen() {
