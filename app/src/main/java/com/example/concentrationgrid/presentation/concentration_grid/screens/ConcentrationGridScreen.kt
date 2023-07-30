@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationViewModel
+import com.example.concentrationgrid.presentation.concentration_grid.components.DefaultButton
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
 import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
 import kotlinx.coroutines.delay
@@ -58,8 +59,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, settingsNavigation: () -> Unit = {}) {
     ConcentrationGridTheme {
-
-
         val concentrationGridUiState =
             concentrationViewModel.concentrationGridState.collectAsState().value
         val scope = rememberCoroutineScope()
@@ -132,7 +131,7 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
                                                         GameState.Won
                                                     )
                                                 } else {
-                                                    if(concentrationGridUiState.gameState == GameState.Playing) {
+                                                    if (concentrationGridUiState.gameState == GameState.Playing) {
                                                         scope.launch {
                                                             onError = true
                                                             delay(500L)
@@ -159,13 +158,9 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
                                         .matchParentSize()
                                         .background(Color(0xAD000000))
                                 )
-                                Button(onClick = {
-                                    concentrationViewModel.resolveGameState(
-                                        GameState.Playing
-                                    )
-                                }, modifier = Modifier.align(Alignment.Center)) {
-                                    Text("Start", color = Color.White)
-                                }
+                                DefaultButton(text = "Start", onClick = { concentrationViewModel.resolveGameState(
+                                    GameState.Playing)}, modifier = Modifier.align(Alignment.Center))
+
                             }
 
 
@@ -248,12 +243,9 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
 
                     if (concentrationGridUiState.gameState == GameState.Won) {
                         AlertDialog(onDismissRequest = {}, confirmButton = {
-                            Button(onClick = {
+                            DefaultButton(onClick = {
                                 concentrationViewModel.resolveGameState(GameState.Idle)
-                            }) {
-                                Text("Reset")
-                            }
-
+                            }, text = "Reset")
                         }, title = {
                             Text(
                                 text = "You won in ${
@@ -269,12 +261,9 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
                     }
                     if ((concentrationGridUiState.gameState == GameState.Lost)) {
                         AlertDialog(onDismissRequest = { }, confirmButton = {
-                            Button(onClick = {
+                            DefaultButton(onClick = {
                                 concentrationViewModel.resolveGameState(GameState.Idle)
-
-                            }) {
-                                Text("Reset")
-                            }
+                            }, text = "Reset")
 
                         }, title = {
                             Text(
