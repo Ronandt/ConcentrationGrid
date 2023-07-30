@@ -67,13 +67,6 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
             color = Color.White
         ) {
 
-            LaunchedEffect(concentrationGridUiState.gameState) {
-                while (true) {
-                    if (concentrationGridUiState.gameState == GameState.Idle) concentrationViewModel.shuffleGridSequence()
-                    delay(100)
-                }
-
-            }
 
             Scaffold(topBar = {
                 TopAppBar(

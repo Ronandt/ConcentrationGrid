@@ -2,11 +2,14 @@ package com.example.concentrationgrid.presentation.concentration_grid
 
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class ConcentrationGridUiState(
     val gameState: GameState = GameState.Idle,
@@ -20,6 +23,8 @@ class ConcentrationViewModel: ViewModel() {
      private val _concentrationGridState = MutableStateFlow(ConcentrationGridUiState())
     val concentrationGridState: StateFlow<ConcentrationGridUiState> = _concentrationGridState.asStateFlow()
 
+
+
     private val timer =  object : CountDownTimer(_concentrationGridState.value.initialTimeInSeconds * 1000, 1000) {
         override fun onTick(millisUntilFinished: Long) {
             _concentrationGridState.update {
@@ -32,6 +37,16 @@ class ConcentrationViewModel: ViewModel() {
             resolveGameState(GameState.Lost)
 
         }
+    }
+
+    init {
+        viewModelScope.launch {
+            while (true) {
+                if (concentrationGridState.value.gameState == GameState.Idle) shuffleGridSequence()
+                delay(100)
+            }
+        }
+
     }
 
     fun resolveGameState(requestedGameState: GameState) {

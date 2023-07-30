@@ -29,7 +29,10 @@ object GridSettingsSerializer: Serializer<GridSettings> {
 
 }
 
-val Context.gridSettings: DataStore<GridSettings>  by dataStore(
+val Context.gridSettings: DataStore<GridSettings> by dataStore(
     fileName = "grid_settings.pb",
     serializer = GridSettingsSerializer
 )
+
+//Backing field cannot be initalisded but only the getter and setter property that modifies the backing field is allowed.
+//A backing field iis a hidden field where the class actually stores the value. This is inefficient so therefore it is not allwoed
