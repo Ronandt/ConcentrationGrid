@@ -47,7 +47,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationViewModel
-import com.example.concentrationgrid.presentation.DefaultButton
+import com.example.concentrationgrid.presentation.concentration_grid.components.DefaultButton
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
 import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
 import kotlinx.coroutines.delay

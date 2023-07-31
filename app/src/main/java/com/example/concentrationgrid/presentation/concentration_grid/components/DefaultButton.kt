@@ -1,4 +1,4 @@
-package com.example.concentrationgrid.presentation
+package com.example.concentrationgrid.presentation.concentration_grid.components
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text

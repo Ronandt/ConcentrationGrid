@@ -3,6 +3,7 @@ package com.example.concentrationgrid.presentation.concentration_grid
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.concentrationgrid.presentation.concentration_grid.states.ConcentrationGridUiState
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,13 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-data class ConcentrationGridUiState(
-    val gameState: GameState = GameState.Idle,
-    val initialTimeInSeconds: Long = 300L,
-    val currentNumber: Int = -1,
-    val gridNumberSequence: List<Int> = (0..99).toList().shuffled(),
-    val timeLeftInSeconds: Long = initialTimeInSeconds
-)
+
 
 class ConcentrationViewModel: ViewModel() {
      private val _concentrationGridState = MutableStateFlow(ConcentrationGridUiState())
