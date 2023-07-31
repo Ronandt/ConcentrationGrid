@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -32,7 +31,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +47,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationViewModel
-import com.example.concentrationgrid.presentation.concentration_grid.components.DefaultButton
+import com.example.concentrationgrid.presentation.DefaultButton
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
 import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
 import kotlinx.coroutines.delay

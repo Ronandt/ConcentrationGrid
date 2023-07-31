@@ -16,7 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationViewModel
 import com.example.concentrationgrid.presentation.concentration_grid.screens.ConcentrationGridScreen
-import com.example.concentrationgrid.presentation.concentration_grid.screens.SettingScreen
+import com.example.concentrationgrid.presentation.grid_settings.SettingScreen
 import com.example.concentrationgrid.presentation.util.ScreenRoutes
 
 
