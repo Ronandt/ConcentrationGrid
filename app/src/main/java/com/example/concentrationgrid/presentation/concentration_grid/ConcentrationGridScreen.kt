@@ -1,4 +1,4 @@
-package com.example.concentrationgrid.presentation.concentration_grid.screens
+package com.example.concentrationgrid.presentation.concentration_grid
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.updateTransition
@@ -46,7 +46,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationViewModel
 import com.example.concentrationgrid.presentation.concentration_grid.components.DefaultButton
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
 import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
@@ -55,7 +54,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, settingsNavigation: () -> Unit = {}) {
+fun ConcentrationGridScreen(
+    concentrationViewModel: ConcentrationViewModel,
+    settingsNavigation: () -> Unit = {}
+) {
     ConcentrationGridTheme {
         val concentrationGridUiState =
             concentrationViewModel.concentrationGridState.collectAsState().value
@@ -110,35 +112,34 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
                                     ) { isSelected ->
                                         if (isSelected) Color.Red else colour
                                     }
-                                    Text(concentrationGridUiState.gridNumberSequence[it].toString()
-                                        .padStart(2, '0'),
+                                    Text(
+                                        concentrationGridUiState.gridNumberSequence[it].toString()
+                                            .padStart(2, '0'),
                                         color = Color.Black,
                                         modifier = Modifier
                                             .background(if (!onError) colour else backgroundColourTrans)
-                                            .clickable {
+                                            .then(if (concentrationGridUiState.gameState != GameState.Playing) Modifier else Modifier.clickable {
+
                                                 if ((concentrationGridUiState.currentNumber + 1) == concentrationGridUiState.gridNumberSequence[it]) {
                                                     concentrationViewModel.updateCurrentScore()
                                                     if (concentrationGridUiState.currentNumber >= 99) concentrationViewModel.resolveGameState(
                                                         GameState.Won
                                                     )
                                                 } else {
-                                                    if (concentrationGridUiState.gameState == GameState.Playing) {
-                                                        scope.launch {
-                                                            onError = true
-                                                            delay(500L)
-                                                            onError = false
-                                                        }
+                                                    scope.launch {
+                                                        onError = true
+                                                        delay(500L)
+                                                        onError = false
                                                     }
-
-
                                                 }
 
-                                            }
+                                            })
                                             .padding(10.dp, 10.dp),
                                         textAlign = TextAlign.Center,
                                         softWrap = false,
                                         overflow = TextOverflow.Visible,
-                                        maxLines = 1)
+                                        maxLines = 1
+                                    )
 
                                 }
 
@@ -149,8 +150,11 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
                                         .matchParentSize()
                                         .background(Color(0xAD000000))
                                 )
-                                DefaultButton(text = "Start", onClick = { concentrationViewModel.resolveGameState(
-                                    GameState.Playing)}, modifier = Modifier.align(Alignment.Center))
+                                DefaultButton(text = "Start", onClick = {
+                                    concentrationViewModel.resolveGameState(
+                                        GameState.Playing
+                                    )
+                                }, modifier = Modifier.align(Alignment.Center))
 
                             }
 
@@ -209,7 +213,13 @@ fun ConcentrationGridScreen(concentrationViewModel: ConcentrationViewModel, sett
                                         },
                                         enabled = concentrationGridUiState.gameState == GameState.Playing
                                     ) {
-                                        Text("Reset", fontSize = 18.sp, color = if(concentrationGridUiState.gameState == GameState.Playing) Color(0xff64B5F6) else Color.DarkGray)
+                                        Text(
+                                            "Reset",
+                                            fontSize = 18.sp,
+                                            color = if (concentrationGridUiState.gameState == GameState.Playing) Color(
+                                                0xff64B5F6
+                                            ) else Color.DarkGray
+                                        )
                                     }
                                 }
 

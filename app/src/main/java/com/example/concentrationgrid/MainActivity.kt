@@ -15,7 +15,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationViewModel
-import com.example.concentrationgrid.presentation.concentration_grid.screens.ConcentrationGridScreen
+import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationGridScreen
+import com.example.concentrationgrid.presentation.grid_settings.GridSettingsViewModel
 import com.example.concentrationgrid.presentation.grid_settings.SettingScreen
 import com.example.concentrationgrid.presentation.util.ScreenRoutes
 
@@ -27,6 +28,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val concentrationViewModel by viewModels<ConcentrationViewModel>()
+        val gridSettingsViewModel by viewModels<GridSettingsViewModel>()
 
         setContent {
             val navControllerState = rememberNavController()
