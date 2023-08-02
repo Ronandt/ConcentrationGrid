@@ -10,6 +10,7 @@ class GridSettingsRepository(private val context: Context) {
 
     fun obtainGridSettings(): Flow<GridSettings> {
         return context.gridSettings.data
+
     }
 
      suspend fun configureGridSettings(gridSettings: GridSettings) {

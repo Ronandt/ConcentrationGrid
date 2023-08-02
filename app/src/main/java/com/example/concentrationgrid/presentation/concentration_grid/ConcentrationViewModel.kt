@@ -74,13 +74,22 @@ class ConcentrationViewModel: ViewModel() {
 
     }
 
+    fun onEvent(uiEvent: ConcentrationGridEvent) {
+        when(uiEvent) {
+            is ConcentrationGridEvent.ClickedGridCell -> TODO()
+            is ConcentrationGridEvent.ShowGridCellError -> TODO()
+        }
+    }
+
+
+
     fun updateCurrentScore() {
         _concentrationGridState.update {
             it.copy(currentNumber = it.currentNumber + 1)
         }
     }
 
-    fun shuffleGridSequence() {
+    private fun shuffleGridSequence() {
         _concentrationGridState.update {
             it.copy(gridNumberSequence = it.gridNumberSequence.shuffled())
         }

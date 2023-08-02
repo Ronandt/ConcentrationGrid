@@ -1,5 +1,7 @@
 package com.example.concentrationgrid.presentation.concentration_grid
 
+import android.widget.RatingBar
+import android.widget.Spinner
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
@@ -46,6 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.example.concentrationgrid.presentation.concentration_grid.components.DefaultButton
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
 import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
@@ -85,6 +88,7 @@ fun ConcentrationGridScreen(
                     )
                 }
             }, floatingActionButtonPosition = FabPosition.End) { it ->
+
                 BoxWithConstraints(modifier = Modifier.padding(it)) {
                     val orientation = this.maxHeight > this.maxWidth
                     Column() {
