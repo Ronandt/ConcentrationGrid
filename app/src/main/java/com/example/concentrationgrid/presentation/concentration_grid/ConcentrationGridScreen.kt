@@ -50,8 +50,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.concentrationgrid.presentation.concentration_grid.components.DefaultButton
+import com.example.concentrationgrid.presentation.concentration_grid.components.GameEndDialog
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
 import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
+import com.example.concentrationgrid.presentation.concentration_grid.theme.Green100
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -110,7 +112,7 @@ fun ConcentrationGridScreen(
                                             "Error state"
                                         )
                                     val colour =
-                                        if (concentrationGridUiState.gridNumberSequence[it] <= concentrationGridUiState.currentNumber) Color.Green else Color.White
+                                        if (concentrationGridUiState.gridNumberSequence[it] <= concentrationGridUiState.currentNumber) Green100 else Color.White
                                     val backgroundColourTrans by transition.animateColor(
                                         label = "border color"
                                     ) { isSelected ->
@@ -126,7 +128,7 @@ fun ConcentrationGridScreen(
 
                                                 if ((concentrationGridUiState.currentNumber + 1) == concentrationGridUiState.gridNumberSequence[it]) {
                                                     concentrationViewModel.updateCurrentScore()
-                                                    if (concentrationGridUiState.currentNumber >= 99) concentrationViewModel.resolveGameState(
+                                                    if (concentrationGridUiState.currentNumber + 1 >= 99) concentrationViewModel.resolveGameState(
                                                         GameState.Won
                                                     )
                                                 } else {
@@ -221,7 +223,7 @@ fun ConcentrationGridScreen(
                                             "Reset",
                                             fontSize = 18.sp,
                                             color = if (concentrationGridUiState.gameState == GameState.Playing) Color(
-                                                0xff64B5F6
+                                                0xFF015191
                                             ) else Color.DarkGray
                                         )
                                     }
@@ -247,34 +249,22 @@ fun ConcentrationGridScreen(
                     }
 
                     if (concentrationGridUiState.gameState == GameState.Won) {
-                        AlertDialog(onDismissRequest = {}, confirmButton = {
-                            DefaultButton(onClick = {
-                                concentrationViewModel.resolveGameState(GameState.Idle)
-                            }, text = "Reset")
-                        }, title = {
-                            Text(
-                                text = "You won in ${
-                                    concentrationGridUiState.timeLeftInSeconds.floorDiv(
-                                        60
-                                    )
-                                        .toString() + " minutes and " + concentrationGridUiState.timeLeftInSeconds.mod(
-                                        60
-                                    ).toString().padStart(2, '0')
-                                } seconds"
-                            )
-                        })
+                        GameEndDialog(title = "You won!",
+                            description = "You won in ${
+                                concentrationGridUiState.timeLeftInSeconds.floorDiv(
+                                    60
+                                )
+                            }  minutes and ${
+                                concentrationGridUiState.timeLeftInSeconds.mod(
+                                    60
+                                ).toString().padStart(2, '0')
+                            } seconds",
+                            onClick = { concentrationViewModel.resolveGameState(GameState.Idle) })
                     }
-                    if ((concentrationGridUiState.gameState == GameState.Lost)) {
-                        AlertDialog(onDismissRequest = { }, confirmButton = {
-                            DefaultButton(onClick = {
-                                concentrationViewModel.resolveGameState(GameState.Idle)
-                            }, text = "Reset")
-
-                        }, title = {
-                            Text(
-                                text = "Your total score is: ${concentrationGridUiState.currentNumber + 1}"
-                            )
-                        })
+                    else if ((concentrationGridUiState.gameState == GameState.Lost)) {
+                        GameEndDialog(title = "Game finished",
+                            description = "Your total score is: ${concentrationGridUiState.currentNumber + 1}",
+                            onClick = { concentrationViewModel.resolveGameState(GameState.Idle) })
                     }
 
 
