@@ -76,14 +76,25 @@ class ConcentrationViewModel: ViewModel() {
 
     fun onEvent(uiEvent: ConcentrationGridEvent) {
         when(uiEvent) {
-            is ConcentrationGridEvent.ClickedGridCell -> TODO()
-            is ConcentrationGridEvent.ShowGridCellError -> TODO()
+            is ConcentrationGridEvent.ClickedGridCell -> {
+                if ((_concentrationGridState.value.currentNumber + 1) == _concentrationGridState.value.gridNumberSequence[uiEvent.gridCellIndex]) {
+                    updateCurrentScore()
+                    if (_concentrationGridState.value.currentNumber  >= 99) resolveGameState(
+                        GameState.Won
+                    )
+                } else {
+                    uiEvent.onError()
+                }
+
+
+            }
+
         }
     }
 
 
 
-    fun updateCurrentScore() {
+    private fun updateCurrentScore() {
         _concentrationGridState.update {
             it.copy(currentNumber = it.currentNumber + 1)
         }

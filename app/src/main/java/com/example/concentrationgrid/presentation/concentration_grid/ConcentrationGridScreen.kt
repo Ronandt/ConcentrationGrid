@@ -125,19 +125,13 @@ fun ConcentrationGridScreen(
                                         modifier = Modifier
                                             .background(if (!onError) colour else backgroundColourTrans)
                                             .then(if (concentrationGridUiState.gameState != GameState.Playing) Modifier else Modifier.clickable {
-
-                                                if ((concentrationGridUiState.currentNumber + 1) == concentrationGridUiState.gridNumberSequence[it]) {
-                                                    concentrationViewModel.updateCurrentScore()
-                                                    if (concentrationGridUiState.currentNumber + 1 >= 99) concentrationViewModel.resolveGameState(
-                                                        GameState.Won
-                                                    )
-                                                } else {
+                                                concentrationViewModel.onEvent(ConcentrationGridEvent.ClickedGridCell(it) {
                                                     scope.launch {
                                                         onError = true
                                                         delay(500L)
                                                         onError = false
                                                     }
-                                                }
+                                                })
 
                                             })
                                             .padding(10.dp, 10.dp),
