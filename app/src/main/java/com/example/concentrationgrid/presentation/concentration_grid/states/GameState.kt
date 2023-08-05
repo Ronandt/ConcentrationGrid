@@ -4,6 +4,6 @@ enum class GameState {
     Playing,
     Won,
     Lost,
-    Idle
+    NotStarted
 }
 

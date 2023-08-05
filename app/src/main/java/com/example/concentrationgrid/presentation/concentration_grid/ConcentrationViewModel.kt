@@ -36,7 +36,7 @@ class ConcentrationViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             while (true) {
-                if (concentrationGridState.value.gameState == GameState.Idle) shuffleGridSequence()
+                if (concentrationGridState.value.gameState == GameState.NotStarted) shuffleGridSequence()
                 delay(100)
             }
         }
@@ -44,30 +44,29 @@ class ConcentrationViewModel: ViewModel() {
     }
 
     private fun resolveGameState(requestedGameState: GameState) {
-        if(requestedGameState in listOf(GameState.Lost, GameState.Won) && _concentrationGridState.value.gameState == GameState.Idle) {
+        if(requestedGameState in listOf(GameState.Lost, GameState.Won) && _concentrationGridState.value.gameState == GameState.NotStarted) {
             throw IllegalStateException("Illegal state from Idle to a final state")
         }
         _concentrationGridState.update {
             it.copy(gameState = requestedGameState)
         }
         //Timer is stopped if any state changes
-        timer.cancel()
         when(_concentrationGridState.value.gameState) {
 
-            GameState.Idle -> {
-
+            GameState.NotStarted -> {
+                timer.cancel()
                 _concentrationGridState.update {
-                    it.copy(currentNumber = -1, timeLeftInSeconds = it.initialTimeInSeconds, gridNumberSequence = it.gridNumberSequence.shuffled())
+                    ConcentrationGridUiState()
                 }
             }
             GameState.Playing -> {
                 timer.start()
             }
             GameState.Lost -> {
-                //Left Empty
+                timer.cancel()
             }
             GameState.Won -> {
-                //Left Empty
+                timer.cancel()
             }
         }
 

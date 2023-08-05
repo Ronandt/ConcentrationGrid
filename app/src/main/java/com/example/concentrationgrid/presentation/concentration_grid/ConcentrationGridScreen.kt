@@ -1,7 +1,6 @@
 package com.example.concentrationgrid.presentation.concentration_grid
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -90,37 +89,29 @@ fun ConcentrationGridScreen(
                             LazyVerticalGrid(
                                 columns = if (orientation) GridCells.Fixed(10) else GridCells.Fixed(
                                     20
-                                ),
-                                modifier = if (concentrationGridUiState.gameState == GameState.Idle) Modifier.background(
-                                    Color.Black
-                                ) else Modifier
+                                )
                             ) {
                                 items(100) {
-                                    //var cellState by remember {mutableStateOf(if(concentrationGridUiState.gridNumberSequence[it] <= concentrationGridUiState.currentNumber) GridCellState.Scored else GridCellState.Default)}
                                     var onError by remember { mutableStateOf(false)}
-
-                                    GridCell(
-                                        value = concentrationGridUiState.gridNumberSequence[it],
-                                        currentNumber = concentrationGridUiState.currentNumber,
-                                        isError = onError,
-                                        modifier =  if (concentrationGridUiState.gameState != GameState.Playing) Modifier else Modifier.clickable {
-                                            concentrationViewModel.onEvent(
-                                                ConcentrationGridEvent.ClickedGridCell(it) {
-                                                    scope.launch {
-                                                        onError = true
-                                                        delay(500L)
-                                                        onError = false
-                                                    }
-                                                })
-
-                                        }
-                                    )
+                                    GridCell(value = concentrationGridUiState.gridNumberSequence[it].toString(),
+                                        scored = concentrationGridUiState.gridNumberSequence[it] <= concentrationGridUiState.currentNumber,
+                                        error = onError,
+                                        clickable = concentrationGridUiState.gameState == GameState.Playing) {
+                                        concentrationViewModel.onEvent(
+                                            ConcentrationGridEvent.ClickedGridCell(it) {
+                                                scope.launch {
+                                                    onError = true
+                                                    delay(500L)
+                                                    onError = false
+                                                }
+                                            })
+                                    }
 
 
                                 }
 
                             }
-                            if (concentrationGridUiState.gameState == GameState.Idle) {
+                            if (concentrationGridUiState.gameState == GameState.NotStarted) {
                                 Spacer(
                                     modifier = Modifier
                                         .matchParentSize()
@@ -181,7 +172,7 @@ fun ConcentrationGridScreen(
 
                                     TextButton(
                                         onClick = {
-                                            concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.Idle))
+                                            concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.NotStarted))
                                         },
                                         enabled = concentrationGridUiState.gameState == GameState.Playing
                                     ) {
@@ -225,12 +216,12 @@ fun ConcentrationGridScreen(
                                     60
                                 ).toString().padStart(2, '0')
                             } seconds",
-                            onClick = {  concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.Idle))})
+                            onClick = {  concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.NotStarted))})
                     }
                     else if ((concentrationGridUiState.gameState == GameState.Lost)) {
                         GameEndDialog(title = "Game finished",
                             description = "Your total score is: ${concentrationGridUiState.currentNumber + 1}",
-                            onClick = {  concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.Idle))})
+                            onClick = {  concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.NotStarted))})
                     }
 
 

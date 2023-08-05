@@ -2,6 +2,7 @@ package com.example.concentrationgrid.presentation.concentration_grid.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,22 +16,29 @@ import com.example.concentrationgrid.presentation.concentration_grid.theme.Green
 
 
 @Composable
-fun GridCell(value: Int, currentNumber: Int , isError: Boolean, modifier: Modifier) {
+fun GridCell(value: String,
+                 scored: Boolean,
+                 error: Boolean,
+                 clickable: Boolean,
+                 onClick: () -> Unit) {
     val colourTransition by animateColorAsState(
         when {
-            isError -> Color.Red
-            value <= currentNumber -> Green100
+            error -> Color.Red
+            scored -> Green100
             else -> Color.White
         }
+
     )
 
     Text(
-        value.toString()
+        value
             .padStart(2, '0'),
-        color = if(!isError && value > currentNumber) Color.Black else Color.White,
+        color = if(!error && !scored) Color.Black else Color.White,
         modifier = Modifier
             .background(colourTransition)
-            .then(modifier)
+            .then(if(clickable) Modifier.clickable {
+                onClick()
+            } else Modifier)
             .padding(10.dp, 10.dp),
         textAlign = TextAlign.Center,
         softWrap = false,
@@ -38,5 +46,3 @@ fun GridCell(value: Int, currentNumber: Int , isError: Boolean, modifier: Modifi
         maxLines = 1
     )
 }
-
-//TODO create a good abstraction for grid-cell
