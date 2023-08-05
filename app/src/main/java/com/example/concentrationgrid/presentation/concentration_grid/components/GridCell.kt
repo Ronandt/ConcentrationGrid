@@ -1,6 +1,5 @@
 package com.example.concentrationgrid.presentation.concentration_grid.components
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,15 +19,19 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun GridCell(value: Int, currentNumber: Int, isError: Boolean, @SuppressLint("ModifierParameter") eventModifier: Modifier) {
-    val colour =
-        if (value <= currentNumber) Green100 else Color.White
-    val colourTransition by animateColorAsState(if(isError) Color.Red else colour)
+fun GridCell(value: Int, currentNumber: Int , isError: Boolean, eventModifier: Modifier) {
+    val colourTransition by animateColorAsState(
+        when {
+            isError -> Color.Red
+            value <= currentNumber -> Green100
+            else -> Color.White
+        }
+    )
 
     Text(
         value.toString()
             .padStart(2, '0'),
-        color = if(colour != Green100 && !isError) Color.Black else Color.White,
+        color = if(!isError && value > currentNumber) Color.Black else Color.White,
         modifier = Modifier
             .background(colourTransition)
             .then(eventModifier)
@@ -39,3 +42,5 @@ fun GridCell(value: Int, currentNumber: Int, isError: Boolean, @SuppressLint("Mo
         maxLines = 1
     )
 }
+
+//TODO create a good abstraction for gridcell

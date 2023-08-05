@@ -43,8 +43,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -52,9 +50,8 @@ import com.example.concentrationgrid.presentation.concentration_grid.components.
 import com.example.concentrationgrid.presentation.concentration_grid.components.GameEndDialog
 import com.example.concentrationgrid.presentation.concentration_grid.components.GridCell
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
-import com.example.concentrationgrid.presentation.concentration_grid.states.GridCellState
+import com.example.concentrationgrid.presentation.concentration_grid.theme.BlackWithAlpha
 import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
-import com.example.concentrationgrid.presentation.concentration_grid.theme.Green100
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -105,7 +102,7 @@ fun ConcentrationGridScreen(
                                 ) else Modifier
                             ) {
                                 items(100) {
-                                    var cellState by remember {mutableStateOf(if(concentrationGridUiState.gridNumberSequence[it] <= concentrationGridUiState.currentNumber) GridCellState.Scored else GridCellState.Default)}
+                                    //var cellState by remember {mutableStateOf(if(concentrationGridUiState.gridNumberSequence[it] <= concentrationGridUiState.currentNumber) GridCellState.Scored else GridCellState.Default)}
                                     var onError by remember { mutableStateOf(false)}
 
                                     GridCell(
@@ -133,7 +130,7 @@ fun ConcentrationGridScreen(
                                 Spacer(
                                     modifier = Modifier
                                         .matchParentSize()
-                                        .background(Color(0xAD000000))
+                                        .background(BlackWithAlpha)
                                 )
                                 DefaultButton(text = "Start", onClick = {
                                     concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.Playing))
