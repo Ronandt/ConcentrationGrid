@@ -77,7 +77,6 @@ class ConcentrationViewModel: ViewModel() {
             is ConcentrationGridEvent.ClickedGridCell -> {
                 if ((_concentrationGridState.value.currentNumber + 1) == _concentrationGridState.value.gridNumberSequence[uiEvent.gridCellIndex]) {
                     updateCurrentScore()
-
                     if (_concentrationGridState.value.currentNumber  >= 99) resolveGameState(
                         GameState.Won
                     )

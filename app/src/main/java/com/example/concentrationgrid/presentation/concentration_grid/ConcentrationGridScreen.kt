@@ -1,6 +1,7 @@
 package com.example.concentrationgrid.presentation.concentration_grid
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -26,6 +27,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,9 +56,11 @@ fun ConcentrationGridScreen(
     concentrationViewModel: ConcentrationViewModel,
     settingsNavigation: () -> Unit = {}
 ) {
+
     ConcentrationGridTheme {
         val concentrationGridUiState =
             concentrationViewModel.concentrationGridState.collectAsStateWithLifecycle().value
+
         val scope = rememberCoroutineScope()
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -83,11 +87,17 @@ fun ConcentrationGridScreen(
             }, floatingActionButtonPosition = FabPosition.End) { it ->
 
                 BoxWithConstraints(modifier = Modifier.padding(it)) {
-                    val orientation = this.maxHeight > this.maxWidth
+                    /*
+                    Minor optimisation where if the screen size changes it, it won't change if it's the same orientation as before
+                    */
+                    val orientation by remember {
+                        derivedStateOf {
+                        if(maxHeight > maxWidth) Orientation.Vertical else Orientation.Horizontal
+                    }}
                     Column(modifier = Modifier) {
                         Box(modifier = Modifier.background(Color.Black)) {
                             LazyVerticalGrid(
-                                columns = if (orientation) GridCells.Fixed(10) else GridCells.Fixed(
+                                columns = if (orientation == Orientation.Vertical) GridCells.Fixed(10) else GridCells.Fixed(
                                     20
                                 )
                             ) {
