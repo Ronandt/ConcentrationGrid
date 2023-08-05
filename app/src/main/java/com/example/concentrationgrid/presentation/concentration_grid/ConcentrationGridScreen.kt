@@ -3,6 +3,7 @@ package com.example.concentrationgrid.presentation.concentration_grid
 import android.widget.RatingBar
 import android.widget.Spinner
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,7 +21,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -33,7 +33,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,10 +47,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.concentrationgrid.presentation.concentration_grid.components.DefaultButton
 import com.example.concentrationgrid.presentation.concentration_grid.components.GameEndDialog
+import com.example.concentrationgrid.presentation.concentration_grid.components.GridCell
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
+import com.example.concentrationgrid.presentation.concentration_grid.states.GridCellState
 import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
 import com.example.concentrationgrid.presentation.concentration_grid.theme.Green100
 import kotlinx.coroutines.delay
@@ -65,7 +66,7 @@ fun ConcentrationGridScreen(
 ) {
     ConcentrationGridTheme {
         val concentrationGridUiState =
-            concentrationViewModel.concentrationGridState.collectAsState().value
+            concentrationViewModel.concentrationGridState.collectAsStateWithLifecycle().value
         val scope = rememberCoroutineScope()
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -76,7 +77,7 @@ fun ConcentrationGridScreen(
             Scaffold(topBar = {
                 TopAppBar(
                     title = { Text("Concentration game", color = Color.White) },
-                    colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = Color.Black)
+                    colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Black)
                 )
             }, floatingActionButton = {
                 FloatingActionButton(
@@ -93,7 +94,7 @@ fun ConcentrationGridScreen(
 
                 BoxWithConstraints(modifier = Modifier.padding(it)) {
                     val orientation = this.maxHeight > this.maxWidth
-                    Column() {
+                    Column(modifier = Modifier) {
                         Box(modifier = Modifier.background(Color.Black)) {
                             LazyVerticalGrid(
                                 columns = if (orientation) GridCells.Fixed(10) else GridCells.Fixed(
@@ -104,28 +105,15 @@ fun ConcentrationGridScreen(
                                 ) else Modifier
                             ) {
                                 items(100) {
-                                    //var cellState by remember {mutableStateOf(GridCellState.Default)}
-                                    var onError by remember { mutableStateOf(false) }
-                                    val transition =
-                                        updateTransition(
-                                            targetState = onError,
-                                            "Error state"
-                                        )
-                                    val colour =
-                                        if (concentrationGridUiState.gridNumberSequence[it] <= concentrationGridUiState.currentNumber) Green100 else Color.White
-                                    val backgroundColourTrans by transition.animateColor(
-                                        label = "border color"
-                                    ) { isSelected ->
-                                        if (isSelected) Color.Red else colour
-                                    }
-                                    Text(
-                                        concentrationGridUiState.gridNumberSequence[it].toString()
-                                            .padStart(2, '0'),
-                                        color = Color.Black,
-                                        modifier = Modifier
-                                            .background(if (!onError) colour else backgroundColourTrans)
-                                            .then(if (concentrationGridUiState.gameState != GameState.Playing) Modifier else Modifier.clickable {
-                                                concentrationViewModel.onEvent(ConcentrationGridEvent.ClickedGridCell(it) {
+                                   // var cellState by remember {mutableStateOf(if(concentrationGridUiState.gridNumberSequence[it] <= concentrationGridUiState.currentNumber) GridCellState.Scored else GridCellState.Default)}
+                                    var onError by remember { mutableStateOf(false)}
+                                    GridCell(
+                                        value = concentrationGridUiState.gridNumberSequence[it],
+                                        currentNumber = concentrationGridUiState.currentNumber,
+                                        isError = onError,
+                                        eventModifier =  if (concentrationGridUiState.gameState != GameState.Playing) Modifier else Modifier.clickable {
+                                            concentrationViewModel.onEvent(
+                                                ConcentrationGridEvent.ClickedGridCell(it) {
                                                     scope.launch {
                                                         onError = true
                                                         delay(500L)
@@ -133,13 +121,9 @@ fun ConcentrationGridScreen(
                                                     }
                                                 })
 
-                                            })
-                                            .padding(10.dp, 10.dp),
-                                        textAlign = TextAlign.Center,
-                                        softWrap = false,
-                                        overflow = TextOverflow.Visible,
-                                        maxLines = 1
+                                        }
                                     )
+
 
                                 }
 
@@ -151,9 +135,7 @@ fun ConcentrationGridScreen(
                                         .background(Color(0xAD000000))
                                 )
                                 DefaultButton(text = "Start", onClick = {
-                                    concentrationViewModel.resolveGameState(
-                                        GameState.Playing
-                                    )
+                                    concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.Playing))
                                 }, modifier = Modifier.align(Alignment.Center))
 
                             }
@@ -207,9 +189,7 @@ fun ConcentrationGridScreen(
 
                                     TextButton(
                                         onClick = {
-                                            concentrationViewModel.resolveGameState(
-                                                GameState.Idle
-                                            )
+                                            concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.Idle))
                                         },
                                         enabled = concentrationGridUiState.gameState == GameState.Playing
                                     ) {
@@ -217,7 +197,7 @@ fun ConcentrationGridScreen(
                                             "Reset",
                                             fontSize = 18.sp,
                                             color = if (concentrationGridUiState.gameState == GameState.Playing) Color(
-                                                0xFF015191
+                                                0xFF000000
                                             ) else Color.DarkGray
                                         )
                                     }
@@ -253,12 +233,12 @@ fun ConcentrationGridScreen(
                                     60
                                 ).toString().padStart(2, '0')
                             } seconds",
-                            onClick = { concentrationViewModel.resolveGameState(GameState.Idle) })
+                            onClick = {  concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.Idle))})
                     }
                     else if ((concentrationGridUiState.gameState == GameState.Lost)) {
                         GameEndDialog(title = "Game finished",
                             description = "Your total score is: ${concentrationGridUiState.currentNumber + 1}",
-                            onClick = { concentrationViewModel.resolveGameState(GameState.Idle) })
+                            onClick = {  concentrationViewModel.onEvent(ConcentrationGridEvent.ResolveGameState(GameState.Idle))})
                     }
 
 
