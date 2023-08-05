@@ -1,10 +1,4 @@
 package com.example.concentrationgrid.presentation.concentration_grid
-
-import android.widget.RatingBar
-import android.widget.Spinner
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -109,7 +103,7 @@ fun ConcentrationGridScreen(
                                         value = concentrationGridUiState.gridNumberSequence[it],
                                         currentNumber = concentrationGridUiState.currentNumber,
                                         isError = onError,
-                                        eventModifier =  if (concentrationGridUiState.gameState != GameState.Playing) Modifier else Modifier.clickable {
+                                        modifier =  if (concentrationGridUiState.gameState != GameState.Playing) Modifier else Modifier.clickable {
                                             concentrationViewModel.onEvent(
                                                 ConcentrationGridEvent.ClickedGridCell(it) {
                                                     scope.launch {

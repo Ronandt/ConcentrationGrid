@@ -1,7 +1,6 @@
 package com.example.concentrationgrid.presentation.concentration_grid.components
 
-import android.content.Context.LOCATION_SERVICE
-import android.location.LocationManager
+
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
