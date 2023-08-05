@@ -105,8 +105,9 @@ fun ConcentrationGridScreen(
                                 ) else Modifier
                             ) {
                                 items(100) {
-                                   // var cellState by remember {mutableStateOf(if(concentrationGridUiState.gridNumberSequence[it] <= concentrationGridUiState.currentNumber) GridCellState.Scored else GridCellState.Default)}
+                                    var cellState by remember {mutableStateOf(if(concentrationGridUiState.gridNumberSequence[it] <= concentrationGridUiState.currentNumber) GridCellState.Scored else GridCellState.Default)}
                                     var onError by remember { mutableStateOf(false)}
+
                                     GridCell(
                                         value = concentrationGridUiState.gridNumberSequence[it],
                                         currentNumber = concentrationGridUiState.currentNumber,
