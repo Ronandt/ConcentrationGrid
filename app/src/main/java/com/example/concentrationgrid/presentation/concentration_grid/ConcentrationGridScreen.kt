@@ -1,4 +1,6 @@
 package com.example.concentrationgrid.presentation.concentration_grid
+
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
@@ -95,11 +97,12 @@ fun ConcentrationGridScreen(
                         if(maxHeight > maxWidth) Orientation.Vertical else Orientation.Horizontal
                     }}
                     Column(modifier = Modifier) {
-                        Box(modifier = Modifier.background(Color.Black)) {
+                        Box {
                             LazyVerticalGrid(
                                 columns = if (orientation == Orientation.Vertical) GridCells.Fixed(10) else GridCells.Fixed(
                                     20
-                                )
+                                ),
+                                modifier = Modifier.padding(8.dp)
                             ) {
                                 items(100) {
                                     var onError by remember { mutableStateOf(false)}

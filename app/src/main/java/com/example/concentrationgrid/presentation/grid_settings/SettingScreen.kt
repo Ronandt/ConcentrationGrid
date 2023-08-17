@@ -4,9 +4,10 @@ import androidx.compose.runtime.LaunchedEffect
 
 
 @Composable
-fun SettingScreen() {
+fun SettingScreen(
+    gridSettingsViewModel: GridSettingsViewModel
+) {
     LaunchedEffect(Unit) {
 
     }
-
 }

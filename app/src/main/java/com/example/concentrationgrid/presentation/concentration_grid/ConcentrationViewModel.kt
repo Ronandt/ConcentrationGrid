@@ -3,19 +3,25 @@ package com.example.concentrationgrid.presentation.concentration_grid
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.concentrationgrid.data.repository.GridSettingsRepository
 import com.example.concentrationgrid.presentation.concentration_grid.states.ConcentrationGridUiState
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
+@HiltViewModel
+class ConcentrationViewModel @Inject constructor(
+    private val gridSettingsRepository: GridSettingsRepository
+): ViewModel() {
 
-class ConcentrationViewModel: ViewModel() {
-     private val _concentrationGridState = MutableStateFlow(ConcentrationGridUiState())
+    private val _concentrationGridState = MutableStateFlow(ConcentrationGridUiState())
     val concentrationGridState: StateFlow<ConcentrationGridUiState> = _concentrationGridState.asStateFlow()
 
 
@@ -77,7 +83,7 @@ class ConcentrationViewModel: ViewModel() {
             is ConcentrationGridEvent.ClickedGridCell -> {
                 if ((_concentrationGridState.value.currentNumber + 1) == _concentrationGridState.value.gridNumberSequence[uiEvent.gridCellIndex]) {
                     updateCurrentScore()
-                    if (_concentrationGridState.value.currentNumber  >= 99) resolveGameState(
+                    if (_concentrationGridState.value.currentNumber >= 99) resolveGameState(
                         GameState.Won
                     )
                 } else {

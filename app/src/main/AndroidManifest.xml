@@ -11,6 +11,7 @@
         android:roundIcon="@drawable/griddy_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pager"
+        android:name=".ConcentrationGridApplication"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"

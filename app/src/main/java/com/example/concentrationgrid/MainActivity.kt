@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -19,30 +20,34 @@ import com.example.concentrationgrid.presentation.concentration_grid.Concentrati
 import com.example.concentrationgrid.presentation.grid_settings.GridSettingsViewModel
 import com.example.concentrationgrid.presentation.grid_settings.SettingScreen
 import com.example.concentrationgrid.presentation.util.ScreenRoutes
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val concentrationViewModel by viewModels<ConcentrationViewModel>()
-        val gridSettingsViewModel by viewModels<GridSettingsViewModel>()
+
+
 
         setContent {
             val navControllerState = rememberNavController()
-            Scaffold() {
+            Scaffold {
                 Box(modifier = Modifier.padding(it)) {
                     NavHost(navController = navControllerState, startDestination = ScreenRoutes.ConcentrationGridScreen) {
                         composable( ScreenRoutes.ConcentrationGridScreen) {
+                            val concentrationViewModel by remember {viewModels<ConcentrationViewModel>() }
                             ConcentrationGridScreen(concentrationViewModel, settingsNavigation = {navControllerState.navigate(
                                 ScreenRoutes.SettingScreen) {
                                 launchSingleTop = true
                             } })
                         }
                         composable( ScreenRoutes.SettingScreen) {
-                            SettingScreen()
+                            val gridSettingsViewModel by remember { viewModels<GridSettingsViewModel>() }
+                            SettingScreen(gridSettingsViewModel)
                         }
                     }
                 }

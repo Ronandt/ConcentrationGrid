@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.concentrationgrid.presentation.concentration_grid.theme.Green100
 
 
@@ -43,6 +45,8 @@ fun GridCell(value: String,
         textAlign = TextAlign.Center,
         softWrap = false,
         overflow = TextOverflow.Visible,
-        maxLines = 1
+        fontSize = 18.sp,
+        maxLines = 1,
+        fontWeight = FontWeight.SemiBold
     )
 }
