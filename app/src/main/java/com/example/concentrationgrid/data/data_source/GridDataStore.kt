@@ -15,7 +15,9 @@ object GridSettingsSerializer: Serializer<GridSettings> {
         .setShufflingRate(AppConfig.getDefaultGridSettings().shufflingRateInSeconds)
         .build()
 
+
     override suspend fun readFrom(input: InputStream): GridSettings {
+
         try {
             return GridSettings.parseFrom(input)
 
