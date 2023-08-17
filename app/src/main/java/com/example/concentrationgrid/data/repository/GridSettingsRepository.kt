@@ -12,10 +12,10 @@ class GridSettingsRepository @Inject constructor(private val gridSettingsDataSto
         return gridSettingsDataStore.data
     }
 
-     suspend fun configureGridSettings(shuffling: Boolean, shuffleRateInSeconds: Int) {
+     suspend fun configureGridSettings(shufflingEnabled: Boolean, shuffleRateInSeconds: Int) {
         gridSettingsDataStore.updateData {
             currentSettings ->
-            currentSettings.toBuilder().setShufflingEnabled(shuffling)
+            currentSettings.toBuilder().setShufflingEnabled(shufflingEnabled)
                 .setShufflingRate(shuffleRateInSeconds).build()
         }
     }

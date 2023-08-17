@@ -59,21 +59,21 @@ fun SettingScreen(
                             title = "Enabled",
                             onClick = {
                                 scope.launch {
-                                    gridSettingsViewModel.onEvent(gridSettingsEvent = GridSettingsEvent.ToggleShuffling(true))
+                                    gridSettingsViewModel.onEvent(gridSettingsEvent = GridSettingsEvent.ToggleShufflingSettings(true))
                                 }
                                 },
                             selected = uiState.screenState == ScreenState.Ready
-                                    && uiState.shuffling,
+                                    && uiState.shufflingEnabled,
                             )
                         SelectionButton(
                             title = "Disabled",
                             onClick = {
                                 scope.launch {
-                                    gridSettingsViewModel.onEvent(gridSettingsEvent = GridSettingsEvent.ToggleShuffling(false))
+                                    gridSettingsViewModel.onEvent(gridSettingsEvent = GridSettingsEvent.ToggleShufflingSettings(false))
                                 }
                                },
                             selected = uiState.screenState == ScreenState.Ready
-                                    && !uiState.shuffling,
+                                    && !uiState.shufflingEnabled,
 
                         )
                     }

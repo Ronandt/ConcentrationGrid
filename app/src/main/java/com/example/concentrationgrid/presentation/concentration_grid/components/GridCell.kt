@@ -41,7 +41,7 @@ fun GridCell(value: String,
             .then(if(clickable) Modifier.clickable {
                 onClick()
             } else Modifier)
-            .padding(10.dp, 10.dp),
+            .padding(6.dp).padding(vertical = 4.dp),
         textAlign = TextAlign.Center,
         softWrap = false,
         overflow = TextOverflow.Visible,

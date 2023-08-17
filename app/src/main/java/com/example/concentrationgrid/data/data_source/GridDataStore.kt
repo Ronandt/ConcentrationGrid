@@ -11,7 +11,7 @@ import java.io.OutputStream
 object GridSettingsSerializer: Serializer<GridSettings> {
     override val defaultValue: GridSettings = GridSettings
         .getDefaultInstance().toBuilder()
-        .setShufflingEnabled(AppConfig.getDefaultGridSettings().shuffling)
+        .setShufflingEnabled(AppConfig.getDefaultGridSettings().shufflingEnabled)
         .setShufflingRate(AppConfig.getDefaultGridSettings().shufflingRateInSeconds)
         .build()
 
