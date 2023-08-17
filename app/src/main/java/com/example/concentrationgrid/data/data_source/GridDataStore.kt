@@ -1,19 +1,9 @@
 package com.example.concentrationgrid.data.data_source
-
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.datastore.core.CorruptionException
-import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
-import androidx.datastore.dataStore
-import androidx.datastore.dataStoreFile
 import com.example.concentrationgrid.GridSettings
+import com.example.concentrationgrid.config.AppConfig
 import com.google.protobuf.InvalidProtocolBufferException
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -21,8 +11,8 @@ import java.io.OutputStream
 object GridSettingsSerializer: Serializer<GridSettings> {
     override val defaultValue: GridSettings = GridSettings
         .getDefaultInstance().toBuilder()
-        .setShufflingEnabled(false)
-        .setShufflingRate(100)
+        .setShufflingEnabled(AppConfig.getDefaultGridSettings().shuffling)
+        .setShufflingRate(AppConfig.getDefaultGridSettings().shufflingRateInSeconds)
         .build()
 
     override suspend fun readFrom(input: InputStream): GridSettings {

@@ -2,7 +2,6 @@ package com.example.concentrationgrid.data.repository
 
 import androidx.datastore.core.DataStore
 import com.example.concentrationgrid.GridSettings
-import com.example.concentrationgrid.presentation.grid_settings.states.GridSettingsUiState
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
