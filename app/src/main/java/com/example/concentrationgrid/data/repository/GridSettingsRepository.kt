@@ -2,6 +2,7 @@ package com.example.concentrationgrid.data.repository
 
 import androidx.datastore.core.DataStore
 import com.example.concentrationgrid.GridSettings
+import com.example.concentrationgrid.presentation.grid_settings.states.GridSettingsUiState
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -10,14 +11,13 @@ class GridSettingsRepository @Inject constructor(private val gridSettingsDataSto
 
     fun obtainGridSettings(): Flow<GridSettings> {
         return gridSettingsDataStore.data
-
     }
 
-     suspend fun configureGridSettings(gridSettings: GridSettings) {
+     suspend fun configureGridSettings(shuffling: Boolean, shuffleRateInSeconds: Int) {
         gridSettingsDataStore.updateData {
             currentSettings ->
-            currentSettings.toBuilder().setShufflingEnabled(gridSettings.shufflingEnabled)
-                .setShufflingRate(gridSettings.shufflingRate).build()
+            currentSettings.toBuilder().setShufflingEnabled(shuffling)
+                .setShufflingRate(shuffleRateInSeconds).build()
         }
     }
 }

@@ -19,7 +19,11 @@ import java.io.OutputStream
 
 
 object GridSettingsSerializer: Serializer<GridSettings> {
-    override val defaultValue: GridSettings = GridSettings.getDefaultInstance()
+    override val defaultValue: GridSettings = GridSettings
+        .getDefaultInstance().toBuilder()
+        .setShufflingEnabled(false)
+        .setShufflingRate(100)
+        .build()
 
     override suspend fun readFrom(input: InputStream): GridSettings {
         try {
@@ -39,5 +43,5 @@ object GridSettingsSerializer: Serializer<GridSettings> {
 
 
 
-//Backing field cannot be initalisded but only the getter and setter property that modifies the backing field is allowed.
+//Backing field cannot be initialised but only the getter and setter property that modifies the backing field is allowed.
 //A backing field iis a hidden field where the class actually stores the value. This is inefficient so therefore it is not allwoed

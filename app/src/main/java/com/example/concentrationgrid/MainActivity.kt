@@ -39,15 +39,18 @@ class MainActivity : ComponentActivity() {
                 Box(modifier = Modifier.padding(it)) {
                     NavHost(navController = navControllerState, startDestination = ScreenRoutes.ConcentrationGridScreen) {
                         composable( ScreenRoutes.ConcentrationGridScreen) {
-                            val concentrationViewModel by remember {viewModels<ConcentrationViewModel>() }
-                            ConcentrationGridScreen(concentrationViewModel, settingsNavigation = {navControllerState.navigate(
-                                ScreenRoutes.SettingScreen) {
-                                launchSingleTop = true
-                            } })
+                            val concentrationViewModel by remember { viewModels<ConcentrationViewModel>() }
+                            ConcentrationGridScreen(concentrationViewModel) {
+                                navControllerState.navigate(
+                                    ScreenRoutes.SettingScreen
+                                ) {
+                                    launchSingleTop = true
+                                }
+                            }
                         }
                         composable( ScreenRoutes.SettingScreen) {
                             val gridSettingsViewModel by remember { viewModels<GridSettingsViewModel>() }
-                            SettingScreen(gridSettingsViewModel)
+                            SettingScreen(gridSettingsViewModel, navigateBack = {navControllerState.navigateUp()})
                         }
                     }
                 }
