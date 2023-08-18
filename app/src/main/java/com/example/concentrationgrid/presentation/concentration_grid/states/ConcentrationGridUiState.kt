@@ -1,4 +1,5 @@
 package com.example.concentrationgrid.presentation.concentration_grid.states
+import com.example.concentrationgrid.config.AppConfig
 import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationGridScreen
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState.*
 /**
@@ -17,5 +18,5 @@ data class ConcentrationGridUiState(
     val initialTimeInSeconds: Long = 300L,
     val currentNumber: Int =  -1,
     val gridNumberSequence: List<Int> = (0..99).toList().shuffled(),
-    val timeLeftInSeconds: Long = initialTimeInSeconds
+    val timeLeftInSeconds: Long = initialTimeInSeconds,
 )

@@ -25,7 +25,7 @@ class GridSettingsViewModel @Inject constructor(private val gridSettingsReposito
     init {
         viewModelScope.launch {
              gridSettingsRepository.obtainGridSettings().distinctUntilChanged().collectLatest { gridSettings ->
-                _gridSettingsUiState.update { uiState -> uiState.copy(shuffling = gridSettings.shufflingEnabled,
+                _gridSettingsUiState.update { uiState -> uiState.copy(shufflingEnabled = gridSettings.shufflingEnabled,
                     screenState = ScreenState.Ready)
                 }
             }
@@ -36,7 +36,7 @@ class GridSettingsViewModel @Inject constructor(private val gridSettingsReposito
     suspend fun onEvent(gridSettingsEvent: GridSettingsEvent) {
         when(gridSettingsEvent) {
             is GridSettingsEvent.ToggleShufflingSettings -> {
-                gridSettingsRepository.configureGridSettings(gridSettingsEvent.enableShuffling, 100)
+                gridSettingsRepository.configureGridSettings(gridSettingsEvent.enableShuffling, 10)
             }
         }
     }

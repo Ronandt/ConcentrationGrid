@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -62,7 +64,6 @@ fun ConcentrationGridScreen(
     ConcentrationGridTheme {
         val concentrationGridUiState =
             concentrationViewModel.concentrationGridState.collectAsStateWithLifecycle().value
-
         val scope = rememberCoroutineScope()
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -72,7 +73,9 @@ fun ConcentrationGridScreen(
 
             Scaffold(topBar = {
                 TopAppBar(
-                    title = { Text("Concentration game", color = Color.White) },
+                    title = { Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+                        Text("Concentration game", color = Color.White, modifier = Modifier.offset(x = (-10).dp))
+                    } },
                     colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Black)
                 )
             }, floatingActionButton = {
