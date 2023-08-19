@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,49 +46,43 @@ class ConcentrationViewModel @Inject constructor(
             }
         }
 
+    //Default behaviour
     init {
         viewModelScope.launch {
-
-            while (true) {
-                if (concentrationGridState.value.gameState == GameState.NotStarted) shuffleGridSequence()
-                delay(100L)
-            }
-        }
-
-        viewModelScope.launch {
-            gridSettingsRepository.obtainGridSettings().distinctUntilChanged().collectLatest { gridSettings ->
-                if(gridSettings.shufflingEnabled != _settingsState.value.shufflingEnabled || gridSettings.shufflingRate != _settingsState.value.shufflingRateInSeconds) {
-                    _settingsState.update {
-                        it.copy(
-                            shufflingEnabled = gridSettings.shufflingEnabled,
-                            shufflingRateInSeconds = gridSettings.shufflingRate,
-                        )
+            launch {
+                concentrationGridState.distinctUntilChangedBy { it.gameState }.collectLatest {
+                    while(it.gameState == GameState.NotStarted) {
+                        shuffleGridSequence()
+                        delay(100L)
                     }
-                    resolveGameState(GameState.NotStarted)
                 }
             }
 
-        }
+            launch {
+                gridSettingsRepository.obtainGridSettings().distinctUntilChanged().collectLatest { gridSettings ->
+                    if(gridSettings.shufflingEnabled != _settingsState.value.shufflingEnabled || gridSettings.shufflingRate != _settingsState.value.shufflingRateInSeconds) {
+                        _settingsState.update {
+                            it.copy(
+                                shufflingEnabled = gridSettings.shufflingEnabled,
+                                shufflingRateInSeconds = gridSettings.shufflingRate,
+                            )
+                        }
+                        resolveGameState(GameState.NotStarted)
+                    }
+                }
+            }
 
-
-        //This definitely has a problem, maybe use timer
-            viewModelScope.launch {
-                while(true) {
-
-                    if(_settingsState.value.shufflingEnabled
-                        && _concentrationGridState.value.gameState == GameState.Playing) {
-
+            launch {
+                _settingsState.combine(_concentrationGridState.distinctUntilChangedBy { it.gameState }) { _settingsState, _gridState ->
+                    return@combine Pair(_gridState.gameState , _settingsState)
+                }.collectLatest {
+                    while(it.first == GameState.Playing && it.second.shufflingEnabled) {
+                        delay(1000L * it.second.shufflingRateInSeconds)
                         shuffleGridSequence()
                     }
-                    delay(1000L * _settingsState.value.shufflingRateInSeconds)
                 }
-
-
             }
-
-
-
-
+        }
 
     }
 
