@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "998487019672",
+    "project_id": "concentrationgrid-d5ee3",
+    "storage_bucket": "concentrationgrid-d5ee3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998487019672:android:22ff558421319fccde80ed",
+        "android_client_info": {
+          "package_name": "com.example.concentrationgrid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998487019672-fknum5alhi0qcc1haqt4q5sa7drsj126.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIuVHJcxxSCRne1pVSg7l1xWLih28aV-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998487019672-fknum5alhi0qcc1haqt4q5sa7drsj126.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
