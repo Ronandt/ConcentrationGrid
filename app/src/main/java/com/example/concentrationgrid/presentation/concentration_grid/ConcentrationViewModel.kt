@@ -50,6 +50,7 @@ class ConcentrationViewModel @Inject constructor(
     //Default behaviour
     init {
         viewModelScope.launch {
+            //Shuffle sequence when the game has not started.
             launch {
                 concentrationGridState.distinctUntilChangedBy { it.gameState }.collectLatest {
                     while(it.gameState == GameState.NotStarted) {
@@ -59,6 +60,7 @@ class ConcentrationViewModel @Inject constructor(
                 }
             }
 
+            //Update settings and reset if it's different
             launch {
                 gridSettingsRepository.obtainGridSettings().distinctUntilChanged().collectLatest { gridSettings ->
                     if(gridSettings.shufflingEnabled != _settingsState.value.shufflingEnabled || gridSettings.shufflingRate != _settingsState.value.shufflingRateInSeconds) {
@@ -74,6 +76,7 @@ class ConcentrationViewModel @Inject constructor(
             }
 
             launch {
+                //Shuffle state
                 _settingsState.combine(_concentrationGridState.distinctUntilChangedBy { it.gameState }) { _settingsState, _gridState ->
                     return@combine Pair(_gridState.gameState , _settingsState)
                 }.collectLatest {
