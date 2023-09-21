@@ -14,8 +14,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SelectionButton(title: String, onClick: () -> Unit, selected: Boolean, modifier: Modifier = Modifier) {
-    val animateColor by animateColorAsState(targetValue =if(selected) Color.Black else Color.LightGray)
-    Button(onClick = onClick, shape = RoundedCornerShape(10.dp), colors = ButtonDefaults.buttonColors(containerColor = animateColor)) {
+    val animateColor by animateColorAsState(targetValue =if(selected) Color.Black else Color.LightGray,
+        label = "Button is selected"
+    )
+    Button(onClick = onClick, shape = RoundedCornerShape(10.dp), colors = ButtonDefaults.buttonColors(containerColor = animateColor), modifier = modifier) {
         Text(text = title)
     }
 }

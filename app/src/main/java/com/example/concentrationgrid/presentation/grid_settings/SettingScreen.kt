@@ -28,18 +28,23 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.concentrationgrid.presentation.grid_settings.components.SelectionButton
+import com.example.concentrationgrid.presentation.grid_settings.states.GridSettingsUiState
 import com.example.concentrationgrid.presentation.grid_settings.states.ScreenState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
-    gridSettingsViewModel: GridSettingsViewModel,
-    navigateBack: () -> Unit
+    uiState: StateFlow<GridSettingsUiState>,
+    enableShufflingSettings: () -> Unit,
+    disableShufflingSettings: () -> Unit,
+    navigateBack: () -> Unit,
+    scope: CoroutineScope
 ) {
-    val scope = rememberCoroutineScope()
-    val uiState = gridSettingsViewModel.gridSettingsUiState.collectAsStateWithLifecycle().value
+    val state = uiState.collectAsStateWithLifecycle().value
     Scaffold(topBar = {
         TopAppBar(colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.White), navigationIcon = {
             IconButton(onClick = navigateBack) {
@@ -59,21 +64,21 @@ fun SettingScreen(
                             title = "Enabled",
                             onClick = {
                                 scope.launch {
-                                    gridSettingsViewModel.onEvent(gridSettingsEvent = GridSettingsEvent.ToggleShufflingSettings(true))
+                                   enableShufflingSettings()
                                 }
                                 },
-                            selected = uiState.screenState == ScreenState.Ready
-                                    && uiState.shufflingEnabled,
+                            selected = state.screenState == ScreenState.Ready
+                                    && state.shufflingEnabled,
                             )
                         SelectionButton(
                             title = "Disabled",
                             onClick = {
                                 scope.launch {
-                                    gridSettingsViewModel.onEvent(gridSettingsEvent = GridSettingsEvent.ToggleShufflingSettings(false))
+                                   disableShufflingSettings()
                                 }
                                },
-                            selected = uiState.screenState == ScreenState.Ready
-                                    && !uiState.shufflingEnabled,
+                            selected = state.screenState == ScreenState.Ready
+                                    && !state.shufflingEnabled,
 
                         )
                     }
@@ -88,7 +93,5 @@ fun SettingScreen(
 @Preview(showBackground = true)
 @Composable
 fun GridSettingsPreview() {
-    SettingScreen(gridSettingsViewModel = viewModel()) {
 
-    }
 }

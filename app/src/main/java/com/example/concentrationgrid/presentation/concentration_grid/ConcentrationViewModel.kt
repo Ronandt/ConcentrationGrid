@@ -147,6 +147,7 @@ class ConcentrationViewModel @Inject constructor(
             }
 
 
+            else -> {}
         }
     }
 

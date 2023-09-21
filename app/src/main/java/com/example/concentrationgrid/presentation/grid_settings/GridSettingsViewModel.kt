@@ -38,6 +38,8 @@ class GridSettingsViewModel @Inject constructor(private val gridSettingsReposito
             is GridSettingsEvent.ToggleShufflingSettings -> {
                 gridSettingsRepository.configureGridSettings(gridSettingsEvent.enableShuffling, 10)
             }
+
+
         }
     }
 
