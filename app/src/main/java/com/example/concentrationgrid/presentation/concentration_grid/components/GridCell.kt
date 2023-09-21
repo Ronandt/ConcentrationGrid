@@ -28,7 +28,7 @@ fun GridCell(value: String,
             error -> Color.Red
             scored -> Green100
             else -> Color.White
-        }
+        }, label = "Grid cell colour"
 
     )
 

@@ -77,8 +77,8 @@ class ConcentrationViewModel @Inject constructor(
 
             launch {
                 //Shuffle state
-                _settingsState.combine(_concentrationGridState.distinctUntilChangedBy { it.gameState }) { _settingsState, _gridState ->
-                    return@combine Pair(_gridState.gameState , _settingsState)
+                _settingsState.combine(_concentrationGridState.distinctUntilChangedBy { it.gameState }) { settingsState, gridState ->
+                    return@combine Pair(gridState.gameState , settingsState)
                 }.collectLatest {
                     while(it.first == GameState.Playing && it.second.shufflingEnabled) {
                         delay(1000L * it.second.shufflingRateInSeconds)

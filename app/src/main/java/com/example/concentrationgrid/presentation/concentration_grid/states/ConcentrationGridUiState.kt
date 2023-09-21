@@ -1,4 +1,6 @@
 package com.example.concentrationgrid.presentation.concentration_grid.states
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import com.example.concentrationgrid.config.AppConfig
 import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationGridScreen
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState.*
@@ -13,6 +15,8 @@ import com.example.concentrationgrid.presentation.concentration_grid.states.Game
  *
  * @constructor Creates an instance of [ConcentrationGridUiState] with the specified initial values.
  */
+
+@Immutable
 data class ConcentrationGridUiState(
     val gameState: GameState = NotStarted,
     val initialTimeInSeconds: Long = 300L,
