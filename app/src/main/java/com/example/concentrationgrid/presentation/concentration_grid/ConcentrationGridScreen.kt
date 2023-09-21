@@ -48,22 +48,26 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.concentrationgrid.presentation.concentration_grid.components.DefaultButton
 import com.example.concentrationgrid.presentation.concentration_grid.components.GameEndDialog
 import com.example.concentrationgrid.presentation.concentration_grid.components.GridCell
+import com.example.concentrationgrid.presentation.concentration_grid.states.ConcentrationGridUiState
 import com.example.concentrationgrid.presentation.concentration_grid.states.GameState
+import com.example.concentrationgrid.presentation.concentration_grid.states.GridCellState
 import com.example.concentrationgrid.presentation.concentration_grid.theme.BlackWithAlpha
 import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConcentrationGridScreen(
-    concentrationViewModel: ConcentrationViewModel,
-    settingsNavigation: () -> Unit = {}
+    uiState: StateFlow<ConcentrationGridUiState>,
+    gridCellClicked: (onError: () -> Unit, gridCellNumber: Int) -> Unit,
+    settingsNavigation: () -> Unit ,
+    resolveGameState: (GameState) -> Unit
 ) {
 
     ConcentrationGridTheme {
-        val concentrationGridUiState =
-            concentrationViewModel.concentrationGridState.collectAsStateWithLifecycle().value
+        val concentrationGridUiState = uiState.collectAsStateWithLifecycle().value
         val scope = rememberCoroutineScope()
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -118,14 +122,13 @@ fun ConcentrationGridScreen(
                                         error = onError,
                                         clickable = concentrationGridUiState.gameState == GameState.Playing
                                     ) {
-                                        concentrationViewModel.onEvent(
-                                            ConcentrationGridEvent.ClickedGridCell(it) {
-                                                scope.launch {
-                                                    onError = true
-                                                    delay(500L)
-                                                    onError = false
-                                                }
-                                            })
+                                        gridCellClicked({
+                                            scope.launch {
+                                                onError = true
+                                                delay(500L)
+                                                onError = false
+                                            }
+                                        },  it)
                                     }
 
 
@@ -139,12 +142,9 @@ fun ConcentrationGridScreen(
                                         .background(BlackWithAlpha)
                                 )
                                 DefaultButton(text = "Start", onClick = {
-                                    concentrationViewModel.onEvent(
-                                        ConcentrationGridEvent.ResolveGameState(
-                                            GameState.Playing
-                                        )
-                                    )
-                                }, modifier = Modifier.align(Alignment.Center))
+                                    resolveGameState(GameState.Playing)
+                                },
+                                 modifier = Modifier.align(Alignment.Center))
 
                             }
 
@@ -197,11 +197,7 @@ fun ConcentrationGridScreen(
 
                                     TextButton(
                                         onClick = {
-                                            concentrationViewModel.onEvent(
-                                                ConcentrationGridEvent.ResolveGameState(
-                                                    GameState.NotStarted
-                                                )
-                                            )
+                                            resolveGameState(GameState.NotStarted)
                                         },
                                         enabled = concentrationGridUiState.gameState == GameState.Playing
                                     ) {
@@ -246,21 +242,13 @@ fun ConcentrationGridScreen(
                                 ).toString().padStart(2, '0')
                             } seconds",
                             onClick = {
-                                concentrationViewModel.onEvent(
-                                    ConcentrationGridEvent.ResolveGameState(
-                                        GameState.NotStarted
-                                    )
-                                )
+                                resolveGameState(GameState.NotStarted)
                             })
                     } else if ((concentrationGridUiState.gameState == GameState.Lost)) {
                         GameEndDialog(title = "Game finished",
                             description = "Your total score is: ${concentrationGridUiState.currentNumber + 1}",
                             onClick = {
-                                concentrationViewModel.onEvent(
-                                    ConcentrationGridEvent.ResolveGameState(
-                                        GameState.NotStarted
-                                    )
-                                )
+                                resolveGameState(GameState.NotStarted)
                             })
                     }
 

@@ -5,9 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -21,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationGridEvent
 import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationViewModel
 import com.example.concentrationgrid.presentation.concentration_grid.ConcentrationGridScreen
 import com.example.concentrationgrid.presentation.grid_settings.GridSettingsEvent
@@ -44,18 +43,25 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navControllerState = rememberNavController()
             val scope = rememberCoroutineScope()
+
             Scaffold {
                 Box(modifier = Modifier.padding(it)) {
                     NavHost(navController = navControllerState, startDestination = ScreenRoutes.ConcentrationGridScreen) {
                         composable( ScreenRoutes.ConcentrationGridScreen) {
                             val concentrationViewModel by remember { viewModels<ConcentrationViewModel>() }
-                            ConcentrationGridScreen(concentrationViewModel) {
+                            val clickedGridCell: (onError: () -> Unit, gridCellNumber: Int) -> Unit = { function: () -> Unit, i: Int ->
+                                concentrationViewModel.onEvent(
+                                    ConcentrationGridEvent.ClickedGridCell(i) {
+                                        function()
+                                    })
+                            }
+                            ConcentrationGridScreen(uiState = concentrationViewModel.concentrationGridState, gridCellClicked = clickedGridCell, resolveGameState = {concentrationViewModel.onEvent(uiEvent = ConcentrationGridEvent.ResolveGameState(it))}, settingsNavigation = {
                                 navControllerState.navigate(
                                     ScreenRoutes.SettingScreen
                                 ) {
                                     launchSingleTop = true
                                 }
-                            }
+                            })
                         }
                         composable( ScreenRoutes.SettingScreen, enterTransition = {
                             slideInHorizontally()

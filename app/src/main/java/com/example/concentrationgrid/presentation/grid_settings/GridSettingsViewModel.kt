@@ -33,10 +33,13 @@ class GridSettingsViewModel @Inject constructor(private val gridSettingsReposito
         }
 
     }
-    suspend fun onEvent(gridSettingsEvent: GridSettingsEvent) {
+     fun onEvent(gridSettingsEvent: GridSettingsEvent) {
         when(gridSettingsEvent) {
             is GridSettingsEvent.ToggleShufflingSettings -> {
-                gridSettingsRepository.configureGridSettings(gridSettingsEvent.enableShuffling, 10)
+                viewModelScope.launch {
+                    gridSettingsRepository.configureGridSettings(gridSettingsEvent.enableShuffling, 10)
+                }
+
             }
 
 
