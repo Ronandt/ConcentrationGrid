@@ -53,6 +53,7 @@ import com.example.concentrationgrid.presentation.concentration_grid.states.Game
 import com.example.concentrationgrid.presentation.concentration_grid.states.GridCellState
 import com.example.concentrationgrid.presentation.concentration_grid.theme.BlackWithAlpha
 import com.example.concentrationgrid.presentation.concentration_grid.theme.ConcentrationGridTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -61,14 +62,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun ConcentrationGridScreen(
     uiState: StateFlow<ConcentrationGridUiState>,
-    gridCellClicked: (onError: () -> Unit, gridCellNumber: Int) -> Unit,
+    gridCellClicked: (() -> Unit, Int) -> Unit,
     settingsNavigation: () -> Unit ,
-    resolveGameState: (GameState) -> Unit
+    resolveGameState: (GameState) -> Unit,
+    scope: CoroutineScope
 ) {
 
     ConcentrationGridTheme {
         val concentrationGridUiState = uiState.collectAsStateWithLifecycle().value
-        val scope = rememberCoroutineScope()
+
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = Color.White

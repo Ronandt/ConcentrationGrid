@@ -32,13 +32,9 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
 
         setContent {
             val navControllerState = rememberNavController()
@@ -61,7 +57,7 @@ class MainActivity : ComponentActivity() {
                                 ) {
                                     launchSingleTop = true
                                 }
-                            })
+                            }, scope = scope)
                         }
                         composable( ScreenRoutes.SettingScreen, enterTransition = {
                             slideInHorizontally()
